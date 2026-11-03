@@ -6,6 +6,7 @@ import { hoverPose } from "./page-hover.mjs?v=20261029-curl8";
 import { applyPageGutter } from "./page-gutter.mjs?v=20261029-curl8";
 import { loadPageText } from "./reader-text.mjs?v=20261029-pre-deploy1";
 import { requestApi, clearSession, getPdfSource } from "./api-client.mjs";
+import { createReaderFullscreen } from "./reader-fullscreen.mjs";
 
 const $ = (selector) => document.querySelector(selector);
 const shell = $("#reader-shell");
@@ -638,13 +639,7 @@ function setZoom(value, { clientX, clientY, live = false } = {}) {
   } else render(currentPage, { anchor });
 }
 
-async function toggleFullscreen() {
-  try {
-    if (document.fullscreenElement) await document.exitFullscreen();
-    else if (shell.requestFullscreen && document.fullscreenEnabled) await shell.requestFullscreen();
-    else { fullscreenFeedback("Tela cheia não está disponível neste navegador."); return; }
-  } catch { fullscreenFeedback("O navegador não permitiu entrar em tela cheia."); }
-}
+function toggleFullscreen() { return fullscreenMode.toggle(); }
 
 function fullscreenFeedback(text) {
   announcement.textContent = text;
@@ -653,6 +648,11 @@ function fullscreenFeedback(text) {
     if (stage.getAttribute("aria-busy") !== "true" && !message.classList.contains("is-error")) message.hidden = true;
   }, 5000);
 }
+
+const fullscreenMode = createReaderFullscreen({
+  document, shell, button: fullscreen, feedback: fullscreenFeedback,
+  onChange() { abortCorner(); clearPrepared(); },
+});
 
 async function updateTextContent() {
   const version = ++textVersion;
@@ -733,15 +733,6 @@ $("#page-form").addEventListener("submit", (event) => {
 });
 pageInput.addEventListener("input", () => updateJump(true));
 pageInput.addEventListener("focus", () => pageInput.select());
-document.addEventListener("fullscreenchange", () => {
-  abortCorner();
-  clearPrepared();
-  const expanded = Boolean(document.fullscreenElement);
-  fullscreen.setAttribute("aria-pressed", String(expanded));
-  fullscreen.setAttribute("aria-label", expanded ? "Sair da tela cheia" : "Entrar em tela cheia");
-  fullscreen.title = expanded ? "Sair da tela cheia (Esc)" : "Tela cheia (F)";
-  fullscreen.querySelector("span").textContent = expanded ? "Sair" : "Tela cheia";
-});
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && corner) { event.preventDefault(); abortCorner(); return; }
   if (event.ctrlKey || event.metaKey || event.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName)) return;
