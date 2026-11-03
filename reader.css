@@ -114,6 +114,11 @@
   .is-reading-expanded .reader-tools { gap: 8px; }
   .is-reading-expanded .fullscreen-control { width: 44px; padding: 0; }
 }
+@media (orientation: landscape) and (max-height: 500px) {
+  .is-reading-expanded .reader-stage { grid-template-rows: minmax(0, 1fr); }
+  .is-reading-expanded .reader-edge-navigation { display: none; }
+  .is-reading-expanded .reading-space { padding: 8px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .reader-loader { animation: none; border-color: var(--ink); }
 }

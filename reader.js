@@ -112,7 +112,7 @@ function updateJump(feedback = false) {
 function layout() {
   const mode = displayMode(innerWidth, innerHeight);
   const slots = mode === "double" ? 2 : 1;
-  const padding = mode === "double" ? 24 : 16;
+  const padding = Number.parseFloat(getComputedStyle(space).paddingTop) || 0;
   const width = Math.max(1, viewport.clientWidth - padding * 2);
   const height = Math.max(1, viewport.clientHeight - padding * 2);
   const ratio = pageRatio;
