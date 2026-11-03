@@ -1,21 +1,80 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; connect-src 'self' https://icfml-livro-preview.2.25.97.234.sslip.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow, noarchive">
-  <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <meta http-equiv="refresh" content="0; url=https://icfml-livro-preview.2.25.97.234.sslip.io/">
-  <title>Acesso ao livro · ICFML 15 anos</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#fbf9f5">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ICFML 15 Anos — Livro digital</title>
+  <link rel="icon" href="assets/icfml-simbolo.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/WorkSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/cover.webp" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="styles.css?v=20261102-confirmation1">
+  <script src="app.js?v=20261103-pages1" defer></script>
+  <script src="cover-motion.js?v=20261029-cover-hover2" defer></script>
 </head>
 <body>
-  <main>
-    <div class="content">
-      <p>Abrindo o livro…</p>
-      <a class="access-link" href="https://icfml-livro-preview.2.25.97.234.sslip.io/" rel="noreferrer">Acessar o livro</a>
-    </div>
+  <a class="skip-link" href="#access-name">Ir para o formulário</a>
+  <div class="page-art" aria-hidden="true">
+    <img src="assets/illustration.webp" srcset="assets/illustration-mobile.webp 1600w, assets/illustration.webp 3200w" sizes="(max-width: 1800px) 100vw, 1800px" alt="" width="3200" height="1286">
+  </div>
+
+  <header class="masthead">
+    <img class="brand" src="assets/icfml.svg" alt="ICFML — Instituto de Certificação e Formação de Mediadores Lusófonos" width="1920" height="652">
+    <span class="edition-label">Livro digital</span>
+  </header>
+
+  <main class="entrance">
+    <figure class="book-presentation" aria-label="Capa do livro ICFML 15 Anos">
+      <div class="book-arrival">
+        <div class="book-object">
+          <img class="book-cover" src="assets/cover.webp" alt="Capa do livro ICFML 15 Anos" width="1600" height="1345" fetchpriority="high" decoding="async">
+        </div>
+      </div>
+    </figure>
+
+    <section class="access" aria-labelledby="access-title">
+      <div class="access-intro">
+        <h1 id="access-title"><span id="access-heading">Acesse o livro</span><span aria-hidden="true">.</span></h1>
+        <p id="access-description">Informe seu nome e e-mail para receber o link de acesso.</p>
+      </div>
+
+      <p id="demo-notice" class="demo-notice" hidden>Versão de apresentação. Os dados preenchidos neste formulário não serão armazenados.</p>
+
+      <form id="access-form" method="post" action="api/access" aria-describedby="access-description" novalidate>
+        <div class="field">
+          <label for="access-name">Nome</label>
+          <input id="access-name" name="name" type="text" autocomplete="name" maxlength="120" placeholder="Seu nome" required aria-describedby="name-error">
+          <span class="field-error" id="name-error"></span>
+        </div>
+        <div class="field">
+          <label for="access-email">E-mail</label>
+          <input id="access-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="seu@email.com" required aria-describedby="email-error" spellcheck="false" autocapitalize="none">
+          <span class="field-error" id="email-error"></span>
+        </div>
+        <button class="continue-button" id="continue-button" type="submit" disabled>
+          <span class="button-label">Receber link de acesso</span>
+          <svg class="button-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="button-spinner" aria-hidden="true"></span>
+        </button>
+        <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+      </form>
+
+      <button class="text-button" id="edit-registration" type="button" hidden>Usar outro cadastro <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+
+      <div class="access-pending" id="access-pending" role="region" aria-label="Aguardando confirmação do e-mail" tabindex="-1" hidden>
+        <svg class="verification-mark" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="4" y="7" width="24" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="m5 9 11 8L27 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p class="pending-address">Confira a caixa de entrada de <strong id="pending-email"></strong></p>
+        <p class="verification-help">Use o link da mensagem para confirmar seu e-mail e acessar o livro. Se não encontrar, confira também o spam.</p>
+        <button class="continue-button" id="resend-confirmation" type="button" disabled>Reenviar e-mail</button>
+        <p id="pending-message" class="form-message" role="status" aria-live="polite"></p>
+        <button class="text-button" id="correct-email" type="button">Corrigir endereço de e-mail</button>
+      </div>
+      <noscript><p class="form-message">Ative o JavaScript no navegador para solicitar seu link de acesso.</p></noscript>
+    </section>
   </main>
 </body>
 </html>
