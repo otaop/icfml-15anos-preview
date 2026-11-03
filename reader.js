@@ -7,6 +7,7 @@ import { applyPageGutter } from "./page-gutter.mjs?v=20261029-curl8";
 import { loadPageText } from "./reader-text.mjs?v=20261029-pre-deploy1";
 import { requestApi, clearSession, getPdfSource } from "./api-client.mjs";
 import { createReaderFullscreen } from "./reader-fullscreen.mjs";
+import { loadAuthorizedReaderLibrary } from "./reader-startup.mjs";
 
 const $ = (selector) => document.querySelector(selector);
 const shell = $("#reader-shell");
@@ -850,14 +851,21 @@ resize.observe(viewport);
 
 async function initialize() {
   try {
-    const session = await requestApi("/api/session", { credentials: "same-origin", cache: "no-store" });
-    if (!session.ok) {
-      if (session.status === 401) clearSession();
-      throw new Error("Session unavailable");
-    }
-    if (!(await session.json()).registered) { clearSession(); location.replace("./"); return; }
-    const { getDocument, GlobalWorkerOptions } = await import("./vendor/pdfjs/pdf.mjs");
-    GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.mjs", import.meta.url).href;
+    const runtime = await loadAuthorizedReaderLibrary({
+      loadLibrary: () => import("./vendor/pdfjs/pdf.mjs?v=6.4.299-min1"),
+      async authorize() {
+        const session = await requestApi("/api/session", { credentials: "same-origin", cache: "no-store" });
+        if (!session.ok) {
+          if (session.status === 401) clearSession();
+          throw new Error("Session unavailable");
+        }
+        if (!(await session.json()).registered) { clearSession(); location.replace("./"); return false; }
+        return true;
+      },
+    });
+    if (!runtime) return;
+    const { getDocument, GlobalWorkerOptions } = runtime;
+    GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.mjs?v=6.4.299-min1", import.meta.url).href;
     const task = getDocument({
       ...getPdfSource(), rangeChunkSize: 262144,
       disableAutoFetch: true, disableStream: true, isEvalSupported: false,
