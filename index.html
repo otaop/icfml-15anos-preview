@@ -2,68 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;wasm-unsafe-eval&#x27;; worker-src &#x27;self&#x27;; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; img-src &#x27;self&#x27; data: blob:; font-src &#x27;self&#x27; data: blob:; connect-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;">
-  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fbf9f5">
-  <meta name="robots" content="noindex, nofollow">
-  <title>ICFML 15 Anos — Livro digital</title>
-  <link rel="icon" href="assets/icfml-simbolo.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/WorkSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/cover.webp" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="styles.css?v=20261029-pre-deploy1">
-  <script src="app.js" defer></script>
-  <script src="cover-motion.js?v=20261029-cover-hover2" defer></script>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Acesso ao livro · ICFML 15 anos</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#access-name">Ir para o formulário</a>
-  <div class="page-art" aria-hidden="true">
-    <img src="assets/illustration.webp" srcset="assets/illustration-mobile.webp 1600w, assets/illustration.webp 3200w" sizes="(max-width: 1800px) 100vw, 1800px" alt="" width="3200" height="1286">
-  </div>
-
-  <header class="masthead">
-    <img class="brand" src="assets/icfml.svg" alt="ICFML — Instituto de Certificação e Formação de Mediadores Lusófonos" width="1920" height="652">
-    <span class="edition-label">Livro digital</span>
-  </header>
-
-  <main class="entrance">
-    <figure class="book-presentation" aria-label="Capa do livro ICFML 15 Anos">
-      <div class="book-arrival">
-        <div class="book-object">
-          <img class="book-cover" src="assets/cover.webp" alt="Capa do livro ICFML 15 Anos" width="1600" height="1345" fetchpriority="high" decoding="async">
-        </div>
-      </div>
-    </figure>
-
-    <section class="access" aria-labelledby="access-title">
-      <div class="access-intro">
-        <h1 id="access-title">Acesse o livro<span aria-hidden="true">.</span></h1>
-        <p id="access-description">Informe seu nome e e-mail para começar a leitura.</p>
-      </div>
-
-      <p id="demo-notice" class="demo-notice">Versão de apresentação. Os dados preenchidos neste formulário não são enviados nem armazenados.</p>
-
-      <form id="access-form" aria-describedby="access-description" novalidate>
-        <div class="field">
-          <label for="access-name">Nome</label>
-          <input id="access-name" type="text" autocomplete="name" maxlength="120" placeholder="Seu nome" required aria-describedby="name-error">
-          <span class="field-error" id="name-error"></span>
-        </div>
-        <div class="field">
-          <label for="access-email">E-mail</label>
-          <input id="access-email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="seu@email.com" required aria-describedby="email-error" spellcheck="false" autocapitalize="none">
-          <span class="field-error" id="email-error"></span>
-        </div>
-        <button class="continue-button" id="continue-button" type="submit" disabled>
-          <span class="button-label">Continuar</span>
-          <svg class="button-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="button-spinner" aria-hidden="true"></span>
-        </button>
-        <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
-      </form>
-
-      <button class="text-button" id="edit-registration" type="button" hidden>Usar outro cadastro <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    </section>
+  <main>
+    <img class="artwork" src="assets/email/header-15-anos-42919d56f516.jpg" width="1040" height="418" alt="ICFML 15 anos">
+    <div class="content">
+      <h1>Acesse o livro</h1>
+      <p>Para ler o livro, abra a página de acesso e confirme seu e-mail.</p>
+      <a class="access-link" href="https://icfml-livro-preview.2.25.97.234.sslip.io/" rel="noreferrer">Acessar o livro</a>
+      <p class="notice">O cadastro e a leitura acontecem na página de acesso. Esta página não recebe seus dados.</p>
+      <img class="logo" src="assets/email/logo-icfml-dba1294875ad.png" width="400" height="136" alt="ICFML">
+    </div>
   </main>
 </body>
 </html>
