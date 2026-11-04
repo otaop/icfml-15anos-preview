@@ -1,4 +1,4 @@
-import { clampPage, spreadForPage, nextPage, previousPage, displayMode } from "./reader-model.mjs?v=20261029-curl8";
+import { clampPage, spreadForPage, nextPage, previousPage, displayMode, readingPositionKey } from "./reader-model.mjs?v=20261104-book2";
 import { createPageTurnRenderer } from "./page-turn.js?v=20261029-curl8";
 import { createPaperLayers } from "./paper-layers.mjs?v=20261028-curl3";
 import { cornerDirection, dragProgress, releaseDecision, sampleVelocity } from "./page-drag.mjs";
@@ -879,7 +879,7 @@ async function initialize() {
     const firstPage = await pdf.getPage(1);
     loadedPages.set(1, firstPage);
     const firstViewport = firstPage.getViewport({ scale: 1 });
-    storageKey = `icfml-reading-position:${pdf.fingerprints[0] || "web"}`;
+    storageKey = readingPositionKey(pdf.fingerprints);
     let remembered = 1;
     try { remembered = localStorage.getItem(storageKey) || 1; } catch { /* Optional browser storage. */ }
     const linkedPage = new URLSearchParams(location.hash.slice(1)).get("page");

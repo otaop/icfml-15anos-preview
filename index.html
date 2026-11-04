@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; connect-src 'self' https://icfml-livro-preview.2.25.97.234.sslip.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
@@ -13,7 +13,7 @@
   <link rel="preload" href="assets/WorkSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/cover.webp" as="image" fetchpriority="high">
   <link rel="stylesheet" href="styles.css?v=20261102-confirmation1">
-  <script src="app.js?v=20261103-pages1" defer></script>
+  <script src="app.js?v=20261104-ptpt1" defer></script>
   <script src="cover-motion.js?v=20261029-cover-hover2" defer></script>
 </head>
 <body>
@@ -38,42 +38,42 @@
 
     <section class="access" aria-labelledby="access-title">
       <div class="access-intro">
-        <h1 id="access-title"><span id="access-heading">Acesse o livro</span><span aria-hidden="true">.</span></h1>
-        <p id="access-description">Informe seu nome e e-mail para receber o link de acesso.</p>
+        <h1 id="access-title"><span id="access-heading">Aceda ao livro</span><span aria-hidden="true">.</span></h1>
+        <p id="access-description">Indique o seu nome e e-mail para receber a ligação de acesso.</p>
       </div>
 
-      <p id="demo-notice" class="demo-notice" hidden>Versão de apresentação. Os dados preenchidos neste formulário não serão armazenados.</p>
+      <p id="demo-notice" class="demo-notice" hidden>Versão de apresentação. Os dados preenchidos neste formulário não serão guardados.</p>
 
       <form id="access-form" method="post" action="api/access" aria-describedby="access-description" novalidate>
         <div class="field">
           <label for="access-name">Nome</label>
-          <input id="access-name" name="name" type="text" autocomplete="name" maxlength="120" placeholder="Seu nome" required aria-describedby="name-error">
+          <input id="access-name" name="name" type="text" autocomplete="name" maxlength="120" placeholder="O seu nome" required aria-describedby="name-error">
           <span class="field-error" id="name-error"></span>
         </div>
         <div class="field">
           <label for="access-email">E-mail</label>
-          <input id="access-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="seu@email.com" required aria-describedby="email-error" spellcheck="false" autocapitalize="none">
+          <input id="access-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="nome@exemplo.pt" required aria-describedby="email-error" spellcheck="false" autocapitalize="none">
           <span class="field-error" id="email-error"></span>
         </div>
         <button class="continue-button" id="continue-button" type="submit" disabled>
-          <span class="button-label">Receber link de acesso</span>
+          <span class="button-label">Receber ligação de acesso</span>
           <svg class="button-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="button-spinner" aria-hidden="true"></span>
         </button>
         <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
       </form>
 
-      <button class="text-button" id="edit-registration" type="button" hidden>Usar outro cadastro <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="text-button" id="edit-registration" type="button" hidden>Utilizar outro registo <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 
-      <div class="access-pending" id="access-pending" role="region" aria-label="Aguardando confirmação do e-mail" tabindex="-1" hidden>
+      <div class="access-pending" id="access-pending" role="region" aria-label="A aguardar confirmação do e-mail" tabindex="-1" hidden>
         <svg class="verification-mark" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="4" y="7" width="24" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="m5 9 11 8L27 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <p class="pending-address">Confira a caixa de entrada de <strong id="pending-email"></strong></p>
-        <p class="verification-help">Use o link da mensagem para confirmar seu e-mail e acessar o livro. Se não encontrar, confira também o spam.</p>
+        <p class="pending-address">Verifique a caixa de entrada de <strong id="pending-email"></strong>.</p>
+        <p class="verification-help">Clique na ligação que enviámos para confirmar o seu e-mail e aceder ao livro. Se não encontrar a mensagem, verifique também a pasta de spam.</p>
         <button class="continue-button" id="resend-confirmation" type="button" disabled>Reenviar e-mail</button>
         <p id="pending-message" class="form-message" role="status" aria-live="polite"></p>
         <button class="text-button" id="correct-email" type="button">Corrigir endereço de e-mail</button>
       </div>
-      <noscript><p class="form-message">Ative o JavaScript no navegador para solicitar seu link de acesso.</p></noscript>
+      <noscript><p class="form-message">Ative o JavaScript no navegador para solicitar a sua ligação de acesso.</p></noscript>
     </section>
   </main>
 </body>

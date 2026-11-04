@@ -4,6 +4,11 @@ function assertTotal(total) {
   }
 }
 
+/** A revised PDF may retain its permanent ID while moving its pages. */
+export function readingPositionKey(fingerprints = []) {
+  return `icfml-reading-position:${fingerprints[1] || fingerprints[0] || 'web'}`;
+}
+
 /** Wide desktop windows and landscape screens show the physical facing pages. */
 export function displayMode(width, height) {
   for (const [name, value] of [['width', width], ['height', height]]) {

@@ -40,7 +40,7 @@ function setFieldError(input, text) {
 }
 
 function idleLabel() {
-  return returning ? "Continuar leitura" : demo ? "Continuar" : "Receber link de acesso";
+  return returning ? "Continuar a leitura" : demo ? "Continuar" : "Receber ligação de acesso";
 }
 
 function remainingSeconds(deadline) {
@@ -60,12 +60,12 @@ function retryDelay(response, result) {
 }
 
 function limitMessage(code, seconds, logout = false) {
-  if (!seconds) return logout ? "Você já pode tentar alterar o cadastro novamente." : "O prazo de espera terminou. Você pode tentar novamente.";
-  if (logout) return "Aguarde o botão ‘Usar outro cadastro’ ficar disponível antes de tentar alterar o cadastro. Você pode continuar a leitura com seu acesso atual.";
-  if (code === "EMAIL_SERVICE_LIMIT") return "O envio de e-mails está temporariamente no limite. Aguarde o prazo indicado no botão antes de tentar novamente. Se já recebeu um link, você pode usá-lo para confirmar o acesso.";
-  if (code === "ACCESS_RATE_LIMIT") return "Há muitas solicitações desta rede. Aguarde o prazo indicado no botão antes de solicitar outro link. Se já recebeu um e-mail, você pode confirmar pelo link existente.";
-  if (code === "AUTH_RATE_LIMIT") return "Há muitas solicitações de acesso neste momento. Aguarde o prazo indicado no botão antes de tentar novamente. Se já recebeu um link, você pode usá-lo para confirmar o acesso.";
-  return "O limite temporário de solicitações foi atingido. Aguarde o prazo indicado no botão antes de tentar novamente.";
+  if (!seconds) return logout ? "Já pode tentar alterar o registo novamente." : "O prazo de espera terminou. Pode tentar novamente.";
+  if (logout) return "Aguarde até o botão ‘Utilizar outro registo’ estar disponível antes de tentar alterar o registo. Pode continuar a leitura com o seu acesso atual.";
+  if (code === "EMAIL_SERVICE_LIMIT") return "Foi atingido temporariamente o limite de envio de e-mails. Aguarde o prazo indicado no botão antes de tentar novamente. Se já recebeu uma ligação, pode utilizá-la para confirmar o acesso.";
+  if (code === "ACCESS_RATE_LIMIT") return "Há muitos pedidos desta rede. Aguarde o prazo indicado no botão antes de solicitar outra ligação. Se já recebeu um e-mail, pode confirmar através da ligação existente.";
+  if (code === "AUTH_RATE_LIMIT") return "Há muitos pedidos de acesso neste momento. Aguarde o prazo indicado no botão antes de tentar novamente. Se já recebeu uma ligação, pode utilizá-la para confirmar o acesso.";
+  return "O limite temporário de pedidos foi atingido. Aguarde o prazo indicado no botão antes de tentar novamente.";
 }
 
 function showLimitNotice(error, target, { logout = false } = {}) {
@@ -92,12 +92,12 @@ function updateCountdown() {
   const logoutRemaining = remainingSeconds(logoutBlockedAt);
   const remaining = Math.max(remainingSeconds(resendAt), requestRemaining);
   submitButton.disabled = sending || (!returning && requestRemaining > 0);
-  buttonLabel.textContent = sending ? demo ? "Abrindo…" : "Enviando link…"
+  buttonLabel.textContent = sending ? demo ? "A abrir…" : "A enviar ligação…"
     : !returning && requestRemaining ? `Solicitar novamente em ${waitLabel(requestRemaining)}` : idleLabel();
   resendButton.disabled = sending || !contact || remaining > 0;
-  resendButton.textContent = sending ? "Enviando…" : remaining ? `Reenviar e-mail em ${waitLabel(remaining)}` : "Reenviar e-mail";
+  resendButton.textContent = sending ? "A enviar…" : remaining ? `Reenviar e-mail em ${waitLabel(remaining)}` : "Reenviar e-mail";
   editButton.disabled = sending || logoutRemaining > 0;
-  if (logoutRemaining) editButton.setAttribute("aria-label", `Usar outro cadastro em ${waitLabel(logoutRemaining)}`);
+  if (logoutRemaining) editButton.setAttribute("aria-label", `Utilizar outro registo em ${waitLabel(logoutRemaining)}`);
   else editButton.removeAttribute("aria-label");
   if (rateNotice && !rateNotice.expired && !remainingSeconds(rateNotice.logout ? logoutBlockedAt : requestBlockedAt)) {
     rateNotice.target.textContent = limitMessage(rateNotice.code, 0, rateNotice.logout);
@@ -141,8 +141,8 @@ function showForm({ focus = true } = {}) {
   returning = false;
   editButton.hidden = true;
   for (const field of form.querySelectorAll(".field")) field.hidden = false;
-  heading.textContent = "Acesse o livro";
-  description.textContent = demo ? "Informe seu nome e e-mail para começar a leitura." : "Informe seu nome e e-mail para receber o link de acesso.";
+  heading.textContent = "Aceda ao livro";
+  description.textContent = demo ? "Indique o seu nome e e-mail para começar a leitura." : "Indique o seu nome e e-mail para receber a ligação de acesso.";
   message.textContent = "";
   if (remainingSeconds(requestBlockedAt)) {
     rateNotice = { target: message, code: requestBlockCode, logout: false, expired: false };
@@ -155,8 +155,8 @@ function showForm({ focus = true } = {}) {
 function showPending(resendAfter) {
   form.hidden = true;
   editButton.hidden = true;
-  heading.textContent = "Confira seu e-mail";
-  description.textContent = "Só falta confirmar seu endereço para acessar o livro.";
+  heading.textContent = "Verifique o seu e-mail";
+  description.textContent = "Só falta confirmar o seu endereço de e-mail para aceder ao livro.";
   pendingEmail.textContent = contact.email;
   pendingMessage.textContent = "";
   pending.hidden = false;
@@ -177,7 +177,7 @@ async function sendAccess(person) {
     });
     const result = await response.json().catch(() => null);
     if (!response.ok || !result?.ok || !(result.registered || result.confirmationRequired)) {
-      const error = new Error("Não foi possível enviar o link agora. Tente novamente em instantes.");
+      const error = new Error("Não foi possível enviar a ligação agora. Tente novamente dentro de instantes.");
       if (response.status === 429) {
         error.code = ["EMAIL_SERVICE_LIMIT", "AUTH_RATE_LIMIT", "ACCESS_RATE_LIMIT"].includes(result?.code) ? result.code : "RATE_LIMIT";
         error.retryAfter = retryDelay(response, result);
@@ -186,8 +186,8 @@ async function sendAccess(person) {
     }
     return result;
   } catch (error) {
-    if (error.name === "AbortError") throw new Error("A conexão demorou mais que o esperado. Tente novamente.");
-    if (error instanceof TypeError) throw new Error("Não foi possível conectar. Verifique sua conexão e tente novamente.");
+    if (error.name === "AbortError") throw new Error("A ligação demorou mais do que o esperado. Tente novamente.");
+    if (error instanceof TypeError) throw new Error("Não foi possível estabelecer a ligação. Verifique a sua ligação à Internet e tente novamente.");
     throw error;
   } finally {
     clearTimeout(timeout);
@@ -213,8 +213,8 @@ form.addEventListener("submit", async (event) => {
   const email = emailInput.value.trim();
   const validName = name.length > 0 && name.length <= 120 && !/[\u0000-\u001f\u007f<>]/u.test(name);
   const validEmail = email.length <= 254 && emailInput.validity.valid && /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/u.test(email) && !/[\u0000-\u001f\u007f]/u.test(email);
-  setFieldError(nameInput, validName ? "" : "Informe um nome com até 120 caracteres.");
-  setFieldError(emailInput, validEmail ? "" : "Informe um endereço de e-mail válido.");
+  setFieldError(nameInput, validName ? "" : "Indique um nome com até 120 caracteres.");
+  setFieldError(emailInput, validEmail ? "" : "Indique um endereço de e-mail válido.");
   if (!validName || !validEmail) { (validName ? emailInput : nameInput).focus(); return; }
   setLoading(true);
   const requestVersion = interactionVersion;
@@ -249,7 +249,7 @@ resendButton.addEventListener("click", async () => {
     if (requestVersion !== interactionVersion) return;
     if (result.registered) { discardPending(); window.location.assign("reader.html"); return; }
     startCountdown(result.resendAfter || 60);
-    pendingMessage.textContent = "Solicitação recebida. Confira sua caixa de entrada e o spam.";
+    pendingMessage.textContent = "Pedido recebido. Verifique a sua caixa de entrada e a pasta de spam.";
     pendingMessage.classList.add("is-information");
   } catch (error) {
     if (requestVersion !== interactionVersion) return;
@@ -284,7 +284,7 @@ editButton.addEventListener("click", async () => {
     });
     if (requestVersion !== interactionVersion) return;
     if (!response.ok) {
-      const error = new Error("Não foi possível encerrar o acesso. Tente novamente.");
+      const error = new Error("Não foi possível terminar o acesso. Tente novamente.");
       if (response.status === 429) {
         const result = await response.json().catch(() => null);
         error.code = "LOGOUT_RATE_LIMIT";
@@ -297,7 +297,7 @@ editButton.addEventListener("click", async () => {
   } catch (error) {
     if (requestVersion === interactionVersion) {
       if (error.retryAfter) showLimitNotice(error, message, { logout: true });
-      else message.textContent = "Não foi possível encerrar o acesso. Tente novamente.";
+      else message.textContent = "Não foi possível terminar o acesso. Tente novamente.";
     }
   } finally {
     clearTimeout(timeout);
@@ -340,12 +340,12 @@ getApiClient()
     demoNotice.hidden = !demo;
     if (interactionVersion !== sessionVersion || sending || !pending.hidden) return;
     buttonLabel.textContent = idleLabel();
-    description.textContent = demo ? "Informe seu nome e e-mail para começar a leitura." : "Informe seu nome e e-mail para receber o link de acesso.";
+    description.textContent = demo ? "Indique o seu nome e e-mail para começar a leitura." : "Indique o seu nome e e-mail para receber a ligação de acesso.";
     if (!session?.registered || nameInput.value || emailInput.value || document.activeElement === nameInput || document.activeElement === emailInput) return;
     returning = true;
     for (const field of form.querySelectorAll(".field")) field.hidden = true;
     buttonLabel.textContent = idleLabel();
-    description.textContent = "Seu acesso está pronto. Continue a leitura do livro.";
+    description.textContent = "O seu acesso está pronto. Continue a leitura do livro.";
     editButton.hidden = false;
   })
   .catch(() => {});

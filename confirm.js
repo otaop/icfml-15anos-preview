@@ -48,10 +48,10 @@ function initializeConfirmation() {
     const remaining = remainingSeconds();
     button.disabled = sending || !confirmationToken || remaining > 0;
     button.setAttribute("aria-busy", String(sending));
-    label.textContent = sending ? "Confirmando…" : remaining ? `Confirmar novamente em ${waitLabel(remaining)}` : "Confirmar e acessar o livro";
+    label.textContent = sending ? "A confirmar…" : remaining ? `Confirmar novamente em ${waitLabel(remaining)}` : "Confirmar e aceder ao livro";
     if (!remaining && countdown) { clearInterval(countdown); countdown = undefined; }
     if (!remaining && limitNotice && confirmationToken) {
-      message.textContent = "O prazo de espera terminou. Você pode tentar confirmar novamente.";
+      message.textContent = "O prazo de espera terminou. Pode tentar confirmar novamente.";
       limitNotice = false;
     }
   }
@@ -63,10 +63,10 @@ function initializeConfirmation() {
     clearInterval(countdown);
     countdown = undefined;
     button.disabled = true;
-    title.textContent = "Link indisponível";
-    description.textContent = "Este link está incompleto, expirou ou já foi utilizado. Solicite um novo e-mail para continuar.";
+    title.textContent = "Ligação indisponível";
+    description.textContent = "Esta ligação está incompleta, expirou ou já foi utilizada. Solicite um novo e-mail para continuar.";
     message.textContent = "";
-    label.textContent = "Confirmar e acessar o livro";
+    label.textContent = "Confirmar e aceder ao livro";
   }
 
   function emailChangeReview() {
@@ -77,8 +77,8 @@ function initializeConfirmation() {
     countdown = undefined;
     needsEmailReview = true;
     button.disabled = true;
-    title.textContent = "Cadastro precisa de atualização";
-    description.textContent = "O endereço deste acesso foi alterado. Entre em contato com a equipe responsável para atualizar seu cadastro.";
+    title.textContent = "O registo precisa de atualização";
+    description.textContent = "O endereço deste acesso foi alterado. Entre em contacto com a equipa responsável para atualizar o seu registo.";
     message.textContent = "";
     help.textContent = "Voltar à página inicial";
     title.setAttribute("tabindex", "-1");
@@ -111,13 +111,13 @@ function initializeConfirmation() {
         const seconds = retryDelay(response, result);
         blockedUntil = Math.max(blockedUntil, Date.now() + seconds * 1000);
         limitNotice = true;
-        const prefix = result?.code === "AUTH_RATE_LIMIT" ? "Há muitas solicitações de acesso neste momento." : "O limite temporário de confirmações foi atingido.";
+        const prefix = result?.code === "AUTH_RATE_LIMIT" ? "Há muitos pedidos de acesso neste momento." : "O limite temporário de confirmações foi atingido.";
         message.textContent = `${prefix} Aguarde o prazo indicado no botão antes de confirmar novamente. Mantenha esta página aberta para tentar novamente quando a espera terminar.`;
         if (!countdown) countdown = setInterval(updateButton, 1000);
         return;
       }
       if (!response.ok || !result?.registered) {
-        throw new Error("Não foi possível confirmar agora. Tente novamente em instantes.");
+        throw new Error("Não foi possível confirmar agora. Tente novamente dentro de instantes.");
       }
       client.acceptSession(result);
       confirmationToken = "";
@@ -125,9 +125,9 @@ function initializeConfirmation() {
     } catch (error) {
       if (!confirmationToken) return;
       message.textContent = error.name === "AbortError"
-        ? "A conexão demorou mais que o esperado. Tente confirmar novamente."
+        ? "A ligação demorou mais do que o esperado. Tente confirmar novamente."
         : error instanceof TypeError
-          ? "Não foi possível conectar. Verifique sua conexão e tente novamente."
+          ? "Não foi possível estabelecer a ligação. Verifique a sua ligação à Internet e tente novamente."
           : error.message;
     } finally {
       clearTimeout(timeout);
